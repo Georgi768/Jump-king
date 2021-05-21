@@ -1,6 +1,21 @@
 # Jump king
 
 ## Description
+Jump king is a 2d platform game which revolves around a main character whose goal is to jump from one platform to another
+until he reaches the top.The player puts himself in the boots of a king whose motivation is safe something that belongs to him.
+At the highest point is where a "Smoking hot babe" is,and the goal of the king is to search for her while struggling to go upwards.
+The special mechanic of the game is that the character can only jump on the direction that he is facing, and the user cannot control the character while he is mid-air.
+Тhe jump must be carefully thought out,because one mistake could lead to a long fall back down.
+The game controls are simple.
+
+The player can move the character left,right and jump.The jump can have variety of heights depending on for how long the player has hold the jump button.The direction of the jump is based on the direction he is faced.
+The game character does not have fall damage.The challenge of the game is to climb upwards avoiding falling down as much as possible.
+The character might even fall at the bottom which is the beginning level of the game if there are no platforms where he can land.
+
+The unique selling point are as follows:
+* Achievements: achievements will be included to provide the player with sense of progression.
+* Enemies and character health bar: Enemies will be moving left and right on the platform that they are currently on. If the character collides with the enemy, he will lose one hearth and if there are no hearths left, he will have to start from the beginning.The enemy can be killed if the character jumps at the top of them.
+* Moving platforms: Since the original game does not provide any moving platforms, this version will include additional platform movements to make it more challenging for the player.
 
 ## Input
 
