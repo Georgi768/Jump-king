@@ -12,24 +12,24 @@ The unique selling points are as follows:
 * Moving platforms: Since the original game does not provide any moving platforms, this version will include additional platform movements to make it more challenging for the player.
 ## Input
 This section describes the inputs that will be included in the game.
-### Character
+#### Character
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
 |PlayerHealth    |        int        |    >=0 and <=3|
 
-### Heart
+#### Heart
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
 |TypeOfItem      |       Enum        |    >=0 and <=3|
 
-### GameCanvas
+#### GameCanvas
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
 |CanvasWidth     |   double          |    >= 0       |
 |CanvasHeight    |   double          |    >= 0       |
 |CanvasId        |   int             |    >= 0       |
 
-### Achievements
+#### Achievements
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
 |Icon/Image      |   String          |    not empty  |
