@@ -11,7 +11,7 @@ The unique selling points are as follows:
 * Enemies and character health bar: Enemies will be moving left and right on the platform that they are currently on. If the character collides with the enemy, he will lose one hearth, and if there are no hearths left, he will have to start from the beginning. The enemy can be killed if the character jumps at the top of them.
 * Moving platforms: Since the original game does not provide any moving platforms, this version will include additional platform movements to make it more challenging for the player.
 ## Input
-This section shows the inputs that will be included in the game.
+This section describes the inputs that will be included in the game.
 ### Character
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
@@ -49,9 +49,46 @@ This section describes the overall outputs of the game.
 |Achievements unlocked message              |       String      |
 
 ## Class diagram
-
+This section illustrates the uml class diagram
 ## Remarks
 
 ## Test plan
+This section describes the test plan
+
+#### GameCanvas
+
+|  objectName    |     object type   |    width      |    height     |      Id      |
+|----------------|-------------------|---------------|---------------|--------------|
+|GameCanvas      |   GameCanvas      |     800       |     600       |      1       |
+
+#### Character
+|  objectName    |     object type   |
+|----------------|-------------------|
+|Jump king       |   MainCharacter   |
+
+#### Enemy
+
+|  objectName    |     object type   |
+|----------------|-------------------|
+|   Lizard       |      Enemy        |
+
+#### Achievements 
+
+|  objectName    |     object type   |    image      |    title      |     Description        |
+|----------------|-------------------|---------------|---------------|------------------------|
+|FirstLevel      |   Achievement     |"RandomImage"  |   Rookie      |Complete the first level|
+
+#### Heart
+
+|  objectName    |     object type   |  type  |
+|----------------|-------------------|--------|
+|    Heart       |      Heart        | Healing|
+
+#### Platform
+
+|  objectName    |     object type   |  width | height|
+|----------------|-------------------|--------|-------|
+|    platform    |      Platform     |  200   |  50   |
+
 
 ## Test cases
