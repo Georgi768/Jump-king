@@ -55,6 +55,9 @@ This section describes the overall outputs of the game.
 
 ## Class diagram
 This section illustrates the uml class diagram
+
+![umlDiagram](images/Class_Diagram.png)
+
 ## Remarks
 
 ## Test plan
@@ -132,9 +135,9 @@ This section checks if `getTitleAndDescriptionIfUnlocked()` works properly.
 
 #### getTitleAndDescriptionIfUnlocked
 
-|#   |  Achievement   |                Action              |             Expected output             |
-|---:|----------------|------------------------------------|-----------------------------------------|
-| 1  | firstLevel     |`getTitleAndDescriptionIfUnlocked()`|Rookie: pass the first level of the game |
+|#   |  Achievement   |                Action              |     Expected output             |
+|---:|----------------|------------------------------------|---------------------------------|
+| 1  | firstLevel     |`getTitleAndDescriptionIfUnlocked()`|Rookie: Complete the first level |
 
 ### getWinOrLoseWindow()
 
