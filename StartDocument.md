@@ -10,6 +10,11 @@ The unique selling points are as follows:
 * Achievements: achievements will be included to provide the player with a sense of progression.
 * Enemies and character health bar: Enemies will be moving left and right on the platform that they are currently on. If the character collides with the enemy, he will lose one hearth, and if there are no hearths left, he will have to start from the beginning. The enemy can be killed if the character jumps at the top of them.
 * Moving platforms: Since the original game does not provide any moving platforms, this version will include additional platform movements to make it more challenging for the player.
+
+## Phaser JS
+
+For the project, framework such as Phaser Js will be used. This framework is fast and lightweight and is suitable for 2d games,making it perfect for the development of this game.It has support for both WebGL and Canvas.It allows for fast rendering,because both WebGL and Canvas are being rendered internally and can switch between them depending on the browser.
+
 ## Input
 This section describes the inputs that will be included in the game.
 #### Character
@@ -59,30 +64,30 @@ This section describes the test plan
 
 |  objectName    |     object type   |    width      |    height     |      Id      |
 |----------------|-------------------|---------------|---------------|--------------|
-|GameCanvas      |   GameCanvas      |     800       |     600       |      1       |
+|gameCanvas      |   GameCanvas      |     800       |     600       |      1       |
 
 #### Character
 |  objectName    |     object type   |
 |----------------|-------------------|
-|Jump king       |   MainCharacter   |
+|jumpKing       |   MainCharacter   |
 
 #### Enemy
 
 |  objectName    |     object type   |
 |----------------|-------------------|
-|   Lizard       |      Enemy        |
+|   lizard       |      Enemy        |
 
 #### Achievements 
 
 |  objectName    |     object type   |    image      |    title      |     Description        |
 |----------------|-------------------|---------------|---------------|------------------------|
-|FirstLevel      |   Achievement     |"RandomImage"  |   Rookie      |Complete the first level|
+|firstLevel      |   Achievement     |"RandomImage"  |   Rookie      |Complete the first level|
 
-#### Heart
+#### Item
 
 |  objectName    |     object type   |  type  |
 |----------------|-------------------|--------|
-|    Heart       |      Heart        | Healing|
+|    heart       |      Heart        | Healing|
 
 #### Platform
 
@@ -92,3 +97,59 @@ This section describes the test plan
 
 
 ## Test cases
+
+### pickUpItem
+
+This section will describe `pickUpItem()` if it's working correctly
+
+#### pickUpItemIfHealthBarNumberIsLessThanThree
+
+
+|#   |MainCharacter   |       Action              |         Expected output           |
+ |---:|---------------|---------------------------|-----------------------------------|
+ | 1  | Jump king      |`pickUpItem(heart:Heart)` |heart(HealthBar increments by one)|
+
+#### pickUpItemIfHealthBarNumberIsThree
+
+
+|#   |MainCharacter   |       Action              |             Expected output        |
+|---:|----------------|---------------------------|------------------------------------|
+| 1  | Jump king      |`pickUpItem(heart:Heart)`  |heart(HealthBar stays the same number|
+
+### onCollisionEnter
+
+This case provides information about `onCollisionEnter()` .
+
+#### onCollisionEnterWithEnemy
+
+|#   |MainCharacter   |       Action              |             Expected output        |
+|---:|----------------|---------------------------|------------------------------------|
+| 1  | Jump king      |   `onCollisionEnter()`    |PlayerHealth decrements by one(3-1=2)|
+
+### getTitleAndDescriptionIfUnlocked()
+
+This section checks if `getTitleAndDescriptionIfUnlocked()` works properly.
+
+#### getTitleAndDescriptionIfUnlocked
+
+|#   |  Achievement   |                Action              |             Expected output             |
+|---:|----------------|------------------------------------|-----------------------------------------|
+| 1  | firstLevel     |`getTitleAndDescriptionIfUnlocked()`|Rookie: pass the first level of the game |
+
+### getWinOrLoseWindow()
+
+This test section describes how `getWinOrLoseWindow()` works .
+
+#### getWinOrLoseWindowIfTheCharacterLosses
+
+
+|#   |   GameCanvas   |                    Action                  |             Expected output             |
+|---:|----------------|--------------------------------------------|-----------------------------------------|
+| 1  | gameCanvas     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|        You failed! Try again ?          |
+
+#### getWinOrLoseWindowIfTheCharacterWins
+
+
+|#   |   GameCanvas   |                    Action                  |                Expected output               |
+|---:|----------------|--------------------------------------------|----------------------------------------------|
+| 1  | gameCanvas     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|Congrats!You beat the game and saved the queen|
