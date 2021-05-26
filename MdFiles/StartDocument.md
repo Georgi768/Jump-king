@@ -56,7 +56,7 @@ This section describes the overall outputs of the game.
 ## Class diagram
 This section illustrates the uml class diagram
 
-![umlDiagram](images/Class_Diagram.png)
+![umlDiagram](../images/Class_Diagram.png)
 
 ## Remarks
 
