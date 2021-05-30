@@ -17,15 +17,20 @@ For the project, framework such as Phaser Js will be used. This framework is fas
 
 ## Input
 This section describes the inputs that will be included in the game.
-#### Character
+#### MainCharacter
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
-|PlayerHealth    |        int        |    >=0 and <=3|
+|SceneLocation   |       Scene       | not empty     |
+|PlayerX         |       int         | not empty     |
+|PlayerY         |       int         | not empty     |
 
 #### Heart
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
-|TypeOfItem      |       Enum        |    >=0 and <=3|
+|SceneLocation   |       Scene       | not empty     |
+|TypeOfItem      |       Enum        | not Empty     |
+|ItemX           |       int         | not Empty     |
+|ItemY           |       int         | not Empty     |
 
 #### GameCanvas
 |     Case       |       Type        |    Condition  |
@@ -42,6 +47,12 @@ This section describes the inputs that will be included in the game.
 |Description     |   String          |    not empty  |
 |isUnlocked      |   boolean         |initially false|
 
+#### Platform
+|     Case       |       Type        |    Condition  |
+|----------------|-------------------|---------------|
+|SceneLocation   |   Scene           | not empty     |
+|Width           |   int             |    >= 0       |
+|Height          |   int             |    >= 0       |
 
 ## Output
 This section describes the overall outputs of the game.
@@ -56,29 +67,27 @@ This section describes the overall outputs of the game.
 ## Class diagram
 This section illustrates the uml class diagram
 
-![umlDiagram](../images/Class_Diagram.png)
-
-## Remarks
+![umlDiagram](../images/JumpKing.png)
 
 ## Test plan
 This section describes the test plan
 
 #### GameCanvas
 
-|  objectName    |     object type   |    width      |    height     |      Id      |
-|----------------|-------------------|---------------|---------------|--------------|
-|gameCanvas      |   GameCanvas      |     800       |     600       |      1       |
+|  objectName    |     object type   |    width      |    height     |
+|----------------|-------------------|---------------|---------------|
+|gameCanvas      |   GameCanvas      |     800       |     600       |
 
 #### Character
-|  objectName    |     object type   |
-|----------------|-------------------|
-|jumpKing       |   MainCharacter   |
+|  objectName    |     object type   |    Scene      |         x     |     y    |
+|----------------|-------------------|---------------|---------------|----------|
+|jumpKing        |   MainCharacter   |  firstLevel   |     400       | 400      |
 
 #### Enemy
 
-|  objectName    |     object type   |
-|----------------|-------------------|
-|   lizard       |      Enemy        |
+|  objectName    |     object type   |    Scene      |         x     |     y    |
+|----------------|-------------------|---------------|---------------|----------|
+|   lizard       |      Enemy        |  firstLevel   |     700       | 400      |
 
 #### Achievements 
 
@@ -94,9 +103,9 @@ This section describes the test plan
 
 #### Platform
 
-|  objectName    |     object type   |  width | height|
-|----------------|-------------------|--------|-------|
-|    platform    |      Platform     |  200   |  50   |
+|  objectName    |     object type   |  Scene    | width | height|
+|----------------|-------------------|-----------|-------|-------|
+|    platform    |      Platform     |FirstLevel |200    |  50   |
 
 
 ## Test cases
@@ -109,8 +118,8 @@ This section will describe `pickUpItem()` if it's working correctly
 
 
 |#   |MainCharacter   |       Action              |         Expected output           |
- |---:|---------------|---------------------------|-----------------------------------|
- | 1  | Jump king      |`pickUpItem(heart:Heart)` |heart(HealthBar increments by one)|
+|---:|---------------|---------------------------|-----------------------------------|
+| 1  | Jump king      |`pickUpItem(heart:Heart)` |heart(HealthBar increments by one)|
 
 #### pickUpItemIfHealthBarNumberIsThree
 

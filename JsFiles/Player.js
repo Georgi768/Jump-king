@@ -7,6 +7,33 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this._MainLevelScene = MainLevelScene;
         this._x = x;
         this._y = y;
+        this._isRightPressed = false;
+        this._isLeftPressed = false;
+        this._isUpPressed = false;
+    }
+
+    get isRightPressed() {
+        return this._isRightPressed;
+    }
+
+    set isRightPressed(value) {
+        this._isRightPressed = value;
+    }
+
+    get isLeftPressed() {
+        return this._isLeftPressed;
+    }
+
+    set isLeftPressed(value) {
+        this._isLeftPressed = value;
+    }
+
+    get isUpPressed() {
+        return this._isUpPressed;
+    }
+
+    set isUpPressed(value) {
+        this._isUpPressed = value;
     }
 
     get MainLevelScene() {
@@ -29,18 +56,43 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         return this._y;
     }
 
+    setMovementSpeedX(velocity)
+    {
+        this.setVelocityX(velocity);
+    }
+    setJumpSpeedY(velocity)
+    {
+        this.setVelocityY(velocity);
+    }
+
     set y(value) {
         this._y = value;
     }
 
-    movePlayer() {
+    moveCharacter() {
         if (cursor.left.isDown) {
-            this.setVelocityX(-160);
+            this.setMovementSpeedX(-160);
+            this._isLeftPressed = true;
+
         } else if (cursor.right.isDown) {
-            this.setVelocityX(160);
+            this.setMovementSpeedX(160);
+            this._isRightPressed = true;
         } else {
-            this.setVelocityX(0);
+            this.setMovementSpeedX(0);
+            this._isLeftPressed = false;
+            this._isRightPressed = false;
         }
+        if(cursor.space.isDown && this.body.touching.down)
+        {
+            this.setJumpSpeedY(-200);
+            this._isUpPressed = true;
+            this.body.immovable = true;
+        }else
+        {
+            this.body.immovable = false;
+            this._isUpPressed = false;
+        }
+
     }
 
 }

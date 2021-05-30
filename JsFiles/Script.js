@@ -1,19 +1,23 @@
-var game;
+var firstLevel = new MainLevelScene();
 
-window.onload = function ()
-{
-    var config = {
-        type:Phaser.AUTO,
-        width:800,
-        height:500,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 400 },
-                debug: false
-            }
-        },
-        scene:[MainLevelScene]
-    }
-    game = new Phaser.Game(config);
+var config = {
+    type:Phaser.AUTO,
+    width:800,
+    height:500,
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 500 },
+            debug: false
+        }
+    },
+    scene:[firstLevel]
 }
+class GameCanvas extends Phaser.Game
+{
+    constructor(config) {
+        super(config);
+    }
+}
+
+var canvas = new GameCanvas(config)
