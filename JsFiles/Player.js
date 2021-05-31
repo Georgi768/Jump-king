@@ -70,28 +70,47 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     moveCharacter() {
+        let power = 0;
         if (cursor.left.isDown) {
             this.setMovementSpeedX(-160);
             this._isLeftPressed = true;
+            if(!this.body.touching.down)
+            {
+                this.setImmovable(false);
+            }
 
         } else if (cursor.right.isDown) {
             this.setMovementSpeedX(160);
             this._isRightPressed = true;
+            if(!this.body.touching.down)
+            {
+                this.setImmovable(false);
+            }
         } else {
             this.setMovementSpeedX(0);
             this._isLeftPressed = false;
             this._isRightPressed = false;
         }
+
         if(cursor.space.isDown && this.body.touching.down)
         {
-            this.setJumpSpeedY(-200);
-            this._isUpPressed = true;
-            this.body.immovable = true;
+            this.power+=.1;
+            console.log(this.power);
+        }else if(cursor.space.isUp && this.power > 0)
+        {
+            if(this.power <= 10)
+            {
+                this.setJumpSpeedY(-this.power*50);
+                this.power = 0;
+            }else
+            {
+                this.power = 10;
+            }
         }else
         {
-            this.body.immovable = false;
-            this._isUpPressed = false;
+            this.power = 0;
         }
+
 
     }
 
