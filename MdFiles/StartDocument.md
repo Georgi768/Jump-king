@@ -37,7 +37,6 @@ This section describes the inputs that will be included in the game.
 |----------------|-------------------|---------------|
 |CanvasWidth     |   double          |    >= 0       |
 |CanvasHeight    |   double          |    >= 0       |
-|CanvasId        |   int             |    >= 0       |
 
 #### Achievements
 |     Case       |       Type        |    Condition  |
@@ -67,7 +66,7 @@ This section describes the overall outputs of the game.
 ## Class diagram
 This section illustrates the uml class diagram
 
-![umlDiagram](../images/JumpKing.png)
+![umlDiagram](../images/JumpKingClassDiagram.png)
 
 ## Test plan
 This section describes the test plan
@@ -77,6 +76,11 @@ This section describes the test plan
 |  objectName    |     object type   |    width      |    height     |
 |----------------|-------------------|---------------|---------------|
 |gameCanvas      |   GameCanvas      |     800       |     600       |
+
+#### LevelScene
+|     Case       |   object type     |
+|----------------|-------------------|
+|levelScene      |      LevelScene   |
 
 #### Character
 |  objectName    |     object type   |    Scene      |         x     |     y    |
