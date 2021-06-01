@@ -159,13 +159,13 @@ This test section describes how `getWinOrLoseWindow()` works .
 #### getWinOrLoseWindowIfTheCharacterLosses
 
 
-|#   |   GameCanvas   |                    Action                  |             Expected output             |
+|#   |   LevelScene   |                    Action                  |             Expected output             |
 |---:|----------------|--------------------------------------------|-----------------------------------------|
-| 1  | gameCanvas     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|        You failed! Try again ?          |
+| 1  | levelScene     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|        You failed! Try again ?          |
 
 #### getWinOrLoseWindowIfTheCharacterWins
 
 
-|#   |   GameCanvas   |                    Action                  |                Expected output               |
+|#   |   LevelScene   |                    Action                  |                Expected output               |
 |---:|----------------|--------------------------------------------|----------------------------------------------|
-| 1  | gameCanvas     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|Congrats!You beat the game and saved the queen|
+| 1  | levelScene     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|Congrats!You beat the game and saved the queen|
