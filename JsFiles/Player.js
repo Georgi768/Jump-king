@@ -1,6 +1,6 @@
 class Player extends Phaser.Physics.Arcade.Sprite {
     constructor(MainLevelScene, x, y) {
-        super(MainLevelScene, x, y,'player', cursor);
+        super(MainLevelScene, x, y, 'player', cursor);
         MainLevelScene.add.existing(this);
         MainLevelScene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
@@ -10,6 +10,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this._isRightPressed = false;
         this._isLeftPressed = false;
         this._isUpPressed = false;
+        this.canJump = true;
     }
 
     get isRightPressed() {
@@ -56,12 +57,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         return this._y;
     }
 
-    setMovementSpeedX(velocity)
-    {
+    setMovementSpeedX(velocity) {
         this.setVelocityX(velocity);
     }
-    setJumpSpeedY(velocity)
-    {
+
+    setJumpSpeedY(velocity) {
         this.setVelocityY(velocity);
     }
 
@@ -70,48 +70,39 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     moveCharacter() {
-        let power = 0;
-        if (cursor.left.isDown) {
+        this.facing = 0;
+        //movement
+        if (cursor.left.isDown && this.power === 0 && this.body.touching.down) {
             this.setMovementSpeedX(-160);
             this._isLeftPressed = true;
-            if(!this.body.touching.down)
-            {
-                this.setImmovable(false);
-            }
+            this.facing = -1;
 
-        } else if (cursor.right.isDown) {
+        } else if (cursor.right.isDown && this.power === 0 && this.body.touching.down) {
             this.setMovementSpeedX(160);
             this._isRightPressed = true;
-            if(!this.body.touching.down)
-            {
-                this.setImmovable(false);
-            }
+            this.facing = 1;
         } else {
             this.setMovementSpeedX(0);
             this._isLeftPressed = false;
             this._isRightPressed = false;
         }
-
-        if(cursor.space.isDown && this.body.touching.down)
-        {
-            this.power+=.1;
+        //Jumping
+        if (cursor.space.isDown && this.body.touching.down && this.canJump ) {
+            this.power += .3;
             console.log(this.power);
-        }else if(cursor.space.isUp && this.power > 0)
-        {
-            if(this.power <= 10)
-            {
-                this.setJumpSpeedY(-this.power*50);
+        } else if (cursor.space.isUp && this.power > 0) {
+            if (this.power <= 10) {
+                //try to push him
+                let tempx = this.facing * this.body.velocity.x
+                let tempy = this.body.velocity.y;
+                this.body.velocity = new Phaser.Math.Vector2(tempx,tempy);
                 this.power = 0;
-            }else
-            {
+            } else {
                 this.power = 10;
             }
-        }else
-        {
+        } else {
             this.power = 0;
         }
-
-
     }
 
 }

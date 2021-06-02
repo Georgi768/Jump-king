@@ -66,7 +66,7 @@ This section describes the overall outputs of the game.
 ## Class diagram
 This section illustrates the uml class diagram
 
-![umlDiagram](../images/JumpKingClassDiagram.png)
+![umlDiagram](../images/NewClassDiagram.png)
 
 ## Test plan
 This section describes the test plan
