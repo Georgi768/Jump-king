@@ -18,8 +18,9 @@ class MainLevelScene extends Phaser.Scene {
         this.add.image(400, 200, 'sky');
         platform = new Platform(this);
         platform.scene.create(platform.width = 400, platform.height = 400, 'platform').setScale(2).refreshBody();
-        player = new Player(this,200,300,cursor);
+        player = new Player(this,200,300,'player',cursor);
         this.physics.add.collider(platform.scene, player);
+
 
     }
 
