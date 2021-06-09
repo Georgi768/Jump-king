@@ -1,68 +1,14 @@
 class Character extends Phaser.Physics.Arcade.Sprite {
     constructor(MainLevelScene, x, y) {
         super(MainLevelScene, x, y);
-        if (new.target === Character) {
-            throw new TypeError("Cannot construct Abstract instances directly");
-        }
-    }
-
-    moveCharacter() {
-        throw new TypeError("Cannot call abstract method.");
-    }
-}
-
-class Enemy extends Character {
-
-    constructor(MainLevelScene, x, y) {
-        super(MainLevelScene, x, y);
-    }
-
-    moveCharacter() {
-
-    }
-
-}
-
-class Player extends Character {
-    constructor(MainLevelScene, x, y) {
-        super(MainLevelScene, x, y, cursor);
-        this.setTexture('player');
-        MainLevelScene.add.existing(this);
-        MainLevelScene.physics.add.existing(this);
-        this.setCollideWorldBounds(true);
         this._MainLevelScene = MainLevelScene;
         this._x = x;
         this._y = y;
-        this._isRightPressed = false;
-        this._isLeftPressed = false;
-        this._isUpPressed = false;
-        this.canJump = true;
-        this.power = 0;
-        this.facing = 0;
-    }
+        if (new.target === Character) {
+            throw new TypeError("Cannot construct Abstract instances directly");
+        }
 
-    get isRightPressed() {
-        return this._isRightPressed;
-    }
 
-    set isRightPressed(value) {
-        this._isRightPressed = value;
-    }
-
-    get isLeftPressed() {
-        return this._isLeftPressed;
-    }
-
-    set isLeftPressed(value) {
-        this._isLeftPressed = value;
-    }
-
-    get isUpPressed() {
-        return this._isUpPressed;
-    }
-
-    set isUpPressed(value) {
-        this._isUpPressed = value;
     }
 
     get MainLevelScene() {
@@ -85,19 +31,124 @@ class Player extends Character {
         return this._y;
     }
 
-    setMovementSpeedX(velocity) {
-        this.setVelocityX(velocity);
-    }
-
-    setJumpSpeedY(velocity) {
-        this.setVelocityY(velocity);
-    }
-
     set y(value) {
         this._y = value;
     }
 
     moveCharacter() {
+        throw new TypeError("Cannot call abstract method.");
+    }
+
+    onCollisionEnter() {
+        throw new TypeError("Cannot call abstract method.");
+    }
+}
+
+class Enemy extends Character {
+
+    constructor(MainLevelScene, x, y) {
+        super(MainLevelScene, x, y);
+        this.setTexture('player');
+        MainLevelScene.add.existing(this);
+        MainLevelScene.physics.add.existing(this);
+        this.body.velocity.x = 80;
+        MainLevelScene.physics.add.overlap(this, player, this.printConsole);
+        MainLevelScene.physics.add.collider(this, platform.group, this.patrolMovement, null, this);
+        MainLevelScene.time.addEvent({delay: 5000, callback: this.changeVar, callbacksScope: this, loop: true});
+    }
+
+    printConsole(body) {
+        if (body.body.touching.up) {
+            body.destroy();
+            player.setVelocityY(-20);
+            player.health++;
+            if (player.health === 3) {
+                player.health = 3;
+            }
+        } else {
+            if (!player.vulnerable) {
+                player.setTint(0xff0000);
+                player.health--
+                console.log('hello');
+                player.vulnerable = true;
+                if (player.health === 0) {
+                    console.log('game over');
+                }
+            }
+        }
+    }
+
+    changeVar() {
+        player.vulnerable = false;
+        player.clearTint();
+    }
+
+    patrolMovement(enemy, platformGroup) {
+        if (enemy.body.velocity.x > 0 && enemy.x > platformGroup.x + platformGroup.width / 2 ||
+            enemy.body.velocity.x < 0 && enemy.body.x < platformGroup.x - platformGroup.width / 2) {
+
+            enemy.body.velocity.x *= -1;
+        }
+    }
+
+    onCollisionEnter() {
+
+    }
+
+
+}
+
+class Player extends Character {
+    constructor(MainLevelScene, x, y) {
+        super(MainLevelScene, x, y, cursor);
+        this.setTexture('player');
+        MainLevelScene.add.existing(this);
+        MainLevelScene.physics.add.existing(this);
+        this.setCollideWorldBounds(true);
+        this.canJump = true;
+        this.power = 0;
+        this.facing = 0;
+        this._health = 3;
+        this._vulnerable = false;
+    }
+
+    get vulnerable() {
+        return this._vulnerable;
+    }
+
+    set vulnerable(value) {
+        this._vulnerable = value;
+    }
+
+    get health() {
+        return this._health;
+    }
+
+    set health(value) {
+        this._health = value;
+    }
+
+    setMovementSpeedX(velocity) {
+        this.setVelocityX(velocity);
+    }
+
+    onCollisionEnter() {
+        this.MainLevelScene.physics.add.overlap(this, heart.group, this.collectHeart,null,this);
+    }
+
+    collectHeart(player,heart) {
+        if (this.health >= 3) {
+            this.health = 3;
+        } else {
+            heart.disableBody(true,true)
+            this.health++;
+        }
+        console.log(this.health);
+        return heart;
+    }
+
+    moveCharacter() {
+
         if (cursor.left.isDown && this.power === 0 && this.body.touching.down) {
             this.setMovementSpeedX(-160);
             this.facing = -1;

@@ -8,7 +8,8 @@ var config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 800 },
-            debug: false
+            debug: false,
+
         }
     },
     scene:[firstLevel]
