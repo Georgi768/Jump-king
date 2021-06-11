@@ -60,11 +60,10 @@ class Enemy extends Character {
         if (body.body.touching.up) {
             body.destroy();
             player.setVelocityY(-20);
-            player.health++;
-            player.healthStatus.setText("Health: " + player.health);
-            if (player.health === 3) {
-                player.health = 3;
+            if (player.health < 3) {
+                player.health++;
             }
+            player.healthStatus.setText("Health: " + player.health);
         } else {
             if (!player.vulnerable) {
                 player.setTint(0xff0000);
@@ -73,7 +72,7 @@ class Enemy extends Character {
                 console.log('hello');
                 player.vulnerable = true;
                 if (player.health === 0) {
-                    console.log('game over');
+                    player.addGameOverScene();
                 }
             }
         }
@@ -111,12 +110,22 @@ class Player extends Character {
         this.power = 0;
         this.facing = 0;
         this._health = 3;
-        this._healthStatus = MainLevelScene.add.text(16,16,'Health: ' + this._health,{fontsize: '32px',fill:'#FFFFFF'}).setScrollFactor(0);
+        this._healthStatus = MainLevelScene.add.text(16, 16, 'Health: ' + this._health, {fill: '#ffffff'}).setScrollFactor(0).setFontSize("20px");
         this._vulnerable = false;
     }
 
     get healthStatus() {
         return this._healthStatus;
+    }
+
+    addGameOverScene() {
+        this.disableBody(true, true);
+        this.MainLevelScene.add.text(300, 400, "You did not make it...", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
+        let restartButton = this.MainLevelScene.add.text(300, 450, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px");
+        restartButton.setInteractive();
+        restartButton.on("pointerup", () => {
+            this.MainLevelScene.scene.start("MainLevelScene");
+        });
     }
 
     set healthStatus(value) {
@@ -151,7 +160,7 @@ class Player extends Character {
         if (this.health >= 3) {
             this.health = 3;
         } else {
-            heart.disableBody(true,true)
+            heart.disableBody(true, true);
             this.health++;
             player.healthStatus.setText("Health: " + player.health);
         }

@@ -27,6 +27,7 @@ class SceneLevel extends Phaser.Scene
     {
         throw new TypeError("Cannot call abstract method.");
     }
+
 }
 
 
