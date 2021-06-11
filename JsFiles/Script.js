@@ -1,21 +1,21 @@
 var firstLevel = new MainLevelScene();
-
+var secondLevel = new SecondLevel();
 var config = {
-    type:Phaser.AUTO,
-    width:800,
-    height:500,
+    type: Phaser.AUTO,
+    width: 600,
+    height: 1500,
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 800 },
+            gravity: {y: 800},
             debug: false,
 
         }
     },
-    scene:[firstLevel]
+    scene: [firstLevel,secondLevel]
 }
-class GameCanvas extends Phaser.Game
-{
+
+class GameCanvas extends Phaser.Game {
     constructor(config) {
         super(config);
     }

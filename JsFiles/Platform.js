@@ -46,10 +46,10 @@ class Platform extends Phaser.Physics.Arcade.Image {
     }
 
     addPlatform(x, y, texture) {
-        this._group.create(x, y, texture);
+        return this._group.create(x, y, texture);
     }
 
-    addMovingPlatform(player,x,y,texture) {
+    addMovingPlatform(player, x, y, texture) {
         let movingPlatform = this.scene.physics.add.image(x, y, texture).setImmovable(true);
         movingPlatform.body.setAllowGravity(false);
         this.scene.tweens.timeline({
@@ -60,7 +60,7 @@ class Platform extends Phaser.Physics.Arcade.Image {
                 {x: -100, y: 0, duration: 2000, ease: "Stepped"}
             ]
         });
-        this.scene.physics.add.collider(player,movingPlatform);
+        this.scene.physics.add.collider(player, movingPlatform);
         return movingPlatform;
     }
 

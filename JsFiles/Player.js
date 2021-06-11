@@ -8,7 +8,6 @@ class Character extends Phaser.Physics.Arcade.Sprite {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
 
-
     }
 
     get MainLevelScene() {
@@ -62,6 +61,7 @@ class Enemy extends Character {
             body.destroy();
             player.setVelocityY(-20);
             player.health++;
+            player.healthStatus.setText("Health: " + player.health);
             if (player.health === 3) {
                 player.health = 3;
             }
@@ -69,6 +69,7 @@ class Enemy extends Character {
             if (!player.vulnerable) {
                 player.setTint(0xff0000);
                 player.health--
+                player.healthStatus.setText("Health: " + player.health);
                 console.log('hello');
                 player.vulnerable = true;
                 if (player.health === 0) {
@@ -105,11 +106,21 @@ class Player extends Character {
         MainLevelScene.add.existing(this);
         MainLevelScene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
+        this.setBounce(0.3);
         this.canJump = true;
         this.power = 0;
         this.facing = 0;
         this._health = 3;
+        this._healthStatus = MainLevelScene.add.text(16,16,'Health: ' + this._health,{fontsize: '32px',fill:'#FFFFFF'}).setScrollFactor(0);
         this._vulnerable = false;
+    }
+
+    get healthStatus() {
+        return this._healthStatus;
+    }
+
+    set healthStatus(value) {
+        this._healthStatus = value;
     }
 
     get vulnerable() {
@@ -133,15 +144,16 @@ class Player extends Character {
     }
 
     onCollisionEnter() {
-        this.MainLevelScene.physics.add.overlap(this, heart.group, this.collectHeart,null,this);
+        this.MainLevelScene.physics.add.overlap(this, heart.group, this.collectHeart, null, this);
     }
 
-    collectHeart(player,heart) {
+    collectHeart(player, heart) {
         if (this.health >= 3) {
             this.health = 3;
         } else {
             heart.disableBody(true,true)
             this.health++;
+            player.healthStatus.setText("Health: " + player.health);
         }
         console.log(this.health);
         return heart;
@@ -150,11 +162,11 @@ class Player extends Character {
     moveCharacter() {
 
         if (cursor.left.isDown && this.power === 0 && this.body.touching.down) {
-            this.setMovementSpeedX(-160);
+            this.setMovementSpeedX(-100);
             this.facing = -1;
         }
         if (cursor.right.isDown && this.power === 0 && this.body.touching.down) {
-            this.setMovementSpeedX(160);
+            this.setMovementSpeedX(100);
             this.facing = 1;
         }
         if (cursor.right.isUp && cursor.left.isUp && cursor.space.isUp) {
@@ -171,7 +183,7 @@ class Player extends Character {
             this.setSpeedOnDirection();
             let tempX = this.body.velocity.x
             let tempY = this.power;
-            this.body.setVelocity(tempX, -tempY * 20);
+            this.body.setVelocity(tempX, -tempY * 25);
             this.canJump = true;
         } else {
             this.power = 0;
@@ -181,16 +193,16 @@ class Player extends Character {
             this.setSpeedOnDirection();
             let tempX = this.body.velocity.x;
             let tempY = this.power;
-            this.body.setVelocity(tempX, -tempY * 20);
+            this.body.setVelocity(tempX, -tempY * 27);
         }
 
     }
 
     setSpeedOnDirection() {
         if (this.facing === -1) {
-            this.setMovementSpeedX(-160);
+            this.setMovementSpeedX(-225);
         } else if (this.facing === 1) {
-            this.setMovementSpeedX(160);
+            this.setMovementSpeedX(225);
         } else {
             this.setMovementSpeedX(0);
         }
