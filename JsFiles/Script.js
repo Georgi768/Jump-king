@@ -2,7 +2,7 @@ var startMenu = new StartMenu();
 var firstLevel = new MainLevelScene();
 var secondLevel = new SecondLevel();
 var finalLevel = new FinalLevel();
-var completeGameScene = new GameCompleteScene
+var completeGameScene = new GameCompleteScene();
 var config = {
     type: Phaser.AUTO,
     width: 600,
@@ -15,7 +15,7 @@ var config = {
 
         }
     },
-    scene: [startMenu,firstLevel,secondLevel,finalLevel,completeGameScene]
+    scene: [finalLevel,completeGameScene]
 }
 
 class GameCanvas extends Phaser.Game {

@@ -121,7 +121,7 @@ class SecondLevel extends SceneLevel {
 
     create() {
         cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 50, 500, cursor);
+        player = new Player(this, 400, 1400, cursor);
         platform = new Platform(this);
         enemy = new Enemy(this, 450, 1100);
         enemy = new Enemy(this, 200, 1030);
@@ -136,7 +136,7 @@ class SecondLevel extends SceneLevel {
         this.physics.add.collider(heart.group, platform.group);
         platform.addPlatform(400, 1500, 'platform').setScale(2).refreshBody();
         platform.addPlatform(100, 1400, 'smallPlatform');
-        platform.addPlatform(190, 1270, 'smallPlatform');
+        platform.addPlatform(290, 1350, 'smallPlatform');
         platform.addPlatform(490, 1210, 'mediumPlatform');
         platform.addPlatform(570, 1100, 'littlePlatform');
         platform.addPlatform(270, 1070, 'bigPlatform');
@@ -173,7 +173,7 @@ class FinalLevel extends SceneLevel {
     create() {
         queen = new Queen(this, 510, 20);
         cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 410, 20, cursor)
+        player = new Player(this, 410, 1400, cursor)
         platform = new Platform(this);
         heart = new Heart(this);
         heart.addItem(20, 400, 'star');
@@ -184,7 +184,7 @@ class FinalLevel extends SceneLevel {
         player.onCollisionEnter()
         platform.addPlatform(400, 1500, 'platform').setScale(2).refreshBody();
         platform.addPlatform(100, 1400, 'smallPlatform');
-        platform.addPlatform(200, 1250, 'smallPlatform');
+        platform.addPlatform(250, 1250, 'smallPlatform');
         platform.addMovingPlatform(player, 350, 1250, 'littlePlatform');
         platform.addPlatform(550, 1095, 'littlePlatform');
         platform.addPlatform(300, 1050, 'mediumPlatform');

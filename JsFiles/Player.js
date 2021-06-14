@@ -179,14 +179,12 @@ class Player extends Character {
             this.setMovementSpeedX(100);
             this.facing = 1;
         }
-        if (cursor.right.isUp && cursor.left.isUp && cursor.space.isUp) {
+        if (cursor.right.isUp && cursor.left.isUp && cursor.space.isUp && this.body.touching.down) {
             this.setMovementSpeedX(0);
             this.facing = 0;
         }
         if (cursor.space.isDown && this.body.touching.down && this.canJump) {
             this.setMovementSpeedX(0);
-        }
-        if (cursor.space.isDown && this.body.touching.down && this.canJump) {
             this.power += .2;
         } else if (cursor.space.isUp && this.body.touching.down && this.power > 0) {
             this.setSpeedOnDirection();
