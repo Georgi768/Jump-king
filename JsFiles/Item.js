@@ -6,6 +6,7 @@ class Item extends Phaser.Physics.Arcade.Image
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
+        this._group = scene.physics.add.group();
         if(this.target === Item)
         {
             throw new TypeError("Cannot construct Abstract instances directly");
@@ -13,6 +14,19 @@ class Item extends Phaser.Physics.Arcade.Image
         this._scene = scene;
     }
 
+
+    addItem(x,y,texture)
+    {
+        this.group.create(x,y,texture);
+    }
+
+    get group() {
+        return this._group;
+    }
+
+    set group(value) {
+        this._group = value;
+    }
 
     get scene() {
         return this._scene;
@@ -28,22 +42,8 @@ class Heart extends Item
 
     constructor(scene) {
         super(scene);
-        this._group = scene.physics.add.group();
     }
 
-
-    get group() {
-        return this._group;
-    }
-
-    set group(value) {
-        this._group = value;
-    }
-
-    addItem(x,y)
-    {
-        this.group.create(x,y,'star');
-    }
 }
 class Door extends Item
 {

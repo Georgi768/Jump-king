@@ -57,7 +57,7 @@ class Enemy extends Character {
     }
 
     printConsole(body) {
-        if (body.body.touching.up) {
+        if (body.body.touching.up && player.body.velocity.y >= 210) {
             body.destroy();
             player.setVelocityY(-20);
             if (player.health < 3) {
@@ -119,10 +119,11 @@ class Player extends Character {
     }
 
     addGameOverScene() {
+        //const color = new Phaser.Display.Color('#000000');
+        //this.MainLevelScene.setFillStyle(color.color);
         this.disableBody(true, true);
         this.MainLevelScene.add.text(300, 400, "You did not make it...", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
-        let restartButton = this.MainLevelScene.add.text(300, 450, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px");
-        restartButton.setInteractive();
+        let restartButton = this.MainLevelScene.add.text(300, 450, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
         restartButton.on("pointerup", () => {
             this.MainLevelScene.scene.start("MainLevelScene");
         });
@@ -187,13 +188,13 @@ class Player extends Character {
         }
         if (cursor.space.isDown && this.body.touching.down && this.canJump) {
             this.power += .2;
-            console.log(this.power);
         } else if (cursor.space.isUp && this.body.touching.down && this.power > 0) {
             this.setSpeedOnDirection();
             let tempX = this.body.velocity.x
             let tempY = this.power;
             this.body.setVelocity(tempX, -tempY * 25);
             this.canJump = true;
+            console.log(this.body.velocity.y);
         } else {
             this.power = 0;
             this.canJump = true;
@@ -203,6 +204,7 @@ class Player extends Character {
             let tempX = this.body.velocity.x;
             let tempY = this.power;
             this.body.setVelocity(tempX, -tempY * 27);
+            console.log(this.body.velocity.y);
         }
 
     }
@@ -216,6 +218,14 @@ class Player extends Character {
             this.setMovementSpeedX(0);
         }
     }
+}
 
+class Queen extends Character {
 
+    constructor(MainLevelScene, x, y) {
+        super(MainLevelScene, x, y);
+        this.setTexture('player');
+        MainLevelScene.add.existing(this);
+        MainLevelScene.physics.add.existing(this);
+    }
 }
