@@ -61,7 +61,7 @@ class Enemy extends Character {
             body.destroy();
             player.setVelocityY(-20);
             if (player.health < 3) {
-                player.health++;
+                player.health += 0.5;
             }
             player.healthStatus.setText("Health: " + player.health);
         } else {
@@ -110,13 +110,37 @@ class Player extends Character {
         this.power = 0;
         this.facing = 0;
         this._health = 3;
+        this._kills = 0;
         this._healthStatus = MainLevelScene.add.text(16, 16, 'Health: ' + this._health, {fill: '#ffffff'}).setScrollFactor(0).setFontSize("20px");
         this._vulnerable = false;
+    }
+
+    get kills() {
+        return this._kills;
+    }
+
+    set kills(value) {
+        this._kills = value;
     }
 
     get healthStatus() {
         return this._healthStatus;
     }
+
+    // checkKillsNumber() {
+    //     if (this._kills === 2) {
+    //         achievements.achievements.EnemyKills.Unlocked = true;
+    //         if(achievementsCollection.getItem("kills") === "false")
+    //         {
+    //             achievementsCollection.setItem('kills', achievements.achievements.EnemyKills.Unlocked = "True");
+    //             this.MainLevelScene.add.text(300, 400, "AchievementComplete", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
+    //         }else
+    //         {
+    //             console.log('already is killed');
+    //         }
+    //     }
+    //
+    // }
 
     addGameOverScene() {
         //const color = new Phaser.Display.Color('#000000');
@@ -160,12 +184,16 @@ class Player extends Character {
     collectHeart(player, heart) {
         if (this.health >= 3) {
             this.health = 3;
+            console.log(this.health);
         } else {
             heart.disableBody(true, true);
             this.health++;
+            if(this.health >= 3)
+            {
+                this.health = 3;
+            }
             player.healthStatus.setText("Health: " + player.health);
         }
-        console.log(this.health);
         return heart;
     }
 

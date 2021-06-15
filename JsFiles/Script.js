@@ -15,7 +15,7 @@ var config = {
 
         }
     },
-    scene: [finalLevel,completeGameScene]
+    scene: [startMenu,firstLevel,secondLevel,finalLevel,completeGameScene]
 }
 
 class GameCanvas extends Phaser.Game {
