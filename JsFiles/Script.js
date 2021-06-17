@@ -3,11 +3,12 @@ var firstLevel = new MainLevelScene();
 var secondLevel = new SecondLevel();
 var finalLevel = new FinalLevel();
 var completeGameScene = new GameCompleteScene();
+var instruction = new InstructionScene();
 var config = {
     type: Phaser.AUTO,
     width: 600,
     height: 1500,
-    scale:{
+    scale: {
         autoCenter: Phaser.Scale.CENTER,
     },
     physics: {
@@ -18,7 +19,10 @@ var config = {
 
         }
     },
-    scene: [startMenu,firstLevel,secondLevel,finalLevel,completeGameScene]
+    render: {
+        pixelArt: true
+    },
+    scene: [startMenu, instruction, firstLevel, secondLevel, finalLevel, completeGameScene]
 }
 
 class GameCanvas extends Phaser.Game {

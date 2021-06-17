@@ -1,23 +1,15 @@
-class Item extends Phaser.Physics.Arcade.Image
-{
-
-    constructor(scene) {
+class Item extends Phaser.Physics.Arcade.Image {
+    constructor(scene,group) {
         super(scene);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
         this._group = scene.physics.add.group();
-        if(this.target === Item)
-        {
+        scene.physics.add.collider(this._group,group);
+        if (this.target === Item) {
             throw new TypeError("Cannot construct Abstract instances directly");
         }
         this._scene = scene;
-    }
-
-
-    addItem(x,y,texture)
-    {
-        this.group.create(x,y,texture);
     }
 
     get group() {
@@ -35,29 +27,48 @@ class Item extends Phaser.Physics.Arcade.Image
     set scene(value) {
         this._scene = value;
     }
-}
 
-class Heart extends Item
-{
-
-    constructor(scene) {
-        super(scene);
+    addItem(x, y, texture) {
+        this.group.create(x, y, texture);
     }
 
 }
-class Door extends Item
-{
 
-    constructor(scene,x,y) {
-        super(scene);
+class Heart extends Item {
+
+    constructor(scene,group) {
+        super(scene,group);
+    }
+}
+
+class Door extends Item {
+
+    constructor(scene, x, y,group) {
+        super(scene,group);
         this.setTexture("door");
         this._scene = scene;
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
+        scene.physics.add.collider(this,group);
     }
 
-    setLevelTransitionDestination(scene)
-    {
-       return this.scene.scene.start(scene)
+    get x() {
+        return this._x;
+    }
+
+    set x(value) {
+        this._x = value;
+    }
+
+    get y() {
+        return this._y;
+    }
+
+    set y(value) {
+        this._y = value;
+    }
+
+    setLevelTransitionDestination(scene) {
+        return this.scene.scene.start(scene)
     }
 }

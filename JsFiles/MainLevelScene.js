@@ -16,18 +16,19 @@ class SceneLevel extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
-        this.load.image('sunshineSky', 'assets/SunShine.png');
-        this.load.image('queen', 'assets/queen.png');
-        this.load.image('greySky', 'assets/GreySky.png');
-        this.load.spritesheet('player', 'assets/JumpKing.png', {frameWidth: 32, frameHeight: 48});
-        this.load.image('platform', 'assets/platform.png');
-        this.load.image('mediumPlatform', 'assets/MediumPlatform.png');
-        this.load.image('smallPlatform', 'assets/smallPlatform.png');
-        this.load.image('bigPlatform', 'assets/BigPlatform.png');
-        this.load.image('littlePlatform', 'assets/littlePlatform.png');
-        this.load.image('heart', 'assets/heart.png');
-        this.load.image('door', 'assets/Basic_Door_Pixel.png');
+        this.load.image('sky', 'assets/Backgrounds/sky.png');
+        this.load.image('sunshineSky', 'assets/Backgrounds/SunShine.png');
+        this.load.image('queen', 'assets/Characters/queen.png');
+        this.load.image('greySky', 'assets/Backgrounds/GreySky.png');
+        this.load.image('crown', 'assets/Backgrounds/Crown.png');
+        this.load.spritesheet('player', 'assets/Characters/JumpKing.png', {frameWidth: 32, frameHeight: 48});
+        this.load.image('platform', 'assets/Platforms/platform.png');
+        this.load.image('mediumPlatform', 'assets/Platforms/MediumPlatform.png');
+        this.load.image('smallPlatform', 'assets/Platforms/smallPlatform.png');
+        this.load.image('bigPlatform', 'assets/Platforms/BigPlatform.png');
+        this.load.image('littlePlatform', 'assets/Platforms/littlePlatform.png');
+        this.load.image('heart', 'assets/Items/heart.png');
+        this.load.image('door', 'assets/Items/Basic_Door_Pixel.png');
     }
 
     create() {
@@ -35,7 +36,12 @@ class SceneLevel extends Phaser.Scene {
     }
 
     update() {
-        throw new TypeError("Cannot call abstract method.");
+        player.moveCharacter();
+    }
+
+    addCameraFollow(background, player, scene) {
+        var cam = this.cameras.main.setBounds(0, 0, background.displayWidth, scene.displayHeight);
+        return cam.startFollow(player);
     }
 
 }
@@ -47,17 +53,27 @@ class StartMenu extends SceneLevel {
     }
 
     create() {
-        this.add.text(300, 400, "Jump king-ish", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
-        let startButton = this.add.text(300, 500, "Start", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
+        this.add.image(300, 200, 'crown').setScrollFactor(1)
+        this.add.text(300, 400, "Jump king", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
+        this.add.text(300, 450, "Legend has it there is a babe at the top...", {
+            fill: '#FFFFFF',
+            align: 'center'
+        }).setScrollFactor(0).setOrigin(0.5).setFontSize("20px");
+
+        let startButton = this.add.text(300, 500, "Start <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
+        let infoButton = this.add.text(300, 550, "How to play <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
         startButton.on("pointerup", () => {
             this.scene.start("MainLevelScene");
             document.documentElement.requestFullscreen().then(r => console.log('fullscreen'));
 
         });
+        infoButton.on("pointerup", () => {
+            this.scene.start("instructionScene");
+
+        });
     }
 
     update() {
-
     }
 }
 
@@ -67,17 +83,10 @@ class MainLevelScene extends SceneLevel {
     }
 
     create() {
+        var background = this.add.image(300, 750, 'sky').setScrollFactor(1)
 
-        this.add.image(300, 750, 'sky').setScrollFactor(1)
-        heart = new Heart(this);
-        //heart.addItem(200, 500, 'star');
-        cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 100, 100, cursor);
-        // heart = new Heart(this);
-        // heart.addItem(100, 350);
         platform = new Platform(this);
         platform.addPlatform(300, 1500, 'platform').setScale(1.5).refreshBody();
-        // platform.addPlatform(300, 400, 'smallPlatform');
         platform.addPlatform(550, 1350, 'mediumPlatform');
         platform.addPlatform(50, 1350, 'mediumPlatform');
         platform.addPlatform(300, 1230, 'platform');
@@ -95,25 +104,14 @@ class MainLevelScene extends SceneLevel {
         platform.addPlatform(200, 260, 'smallPlatform');
         platform.addPlatform(5, 260, 'mediumPlatform');
         platform.addPlatform(300, 150, 'platform').setScale(1).refreshBody();
-        var cam = this.cameras.main.setBounds(0, 0, this.displayWidth,this.displayHeight);
 
-        cam.startFollow(player);
+        player = new Player(this, 300, 1400, platform.group);
 
-        enemy = new Enemy(this, 100, 400);
-        // enemy2 = new Enemy(this, 300, 100);
+        door = new Door(this, 400, 100, platform.group);
 
-        door = new Door(this, 400, 100);
         this.physics.add.overlap(door, player, () => door.setLevelTransitionDestination('secondLevel'), null, door);
-        this.physics.add.collider(door, platform.group);
-        this.physics.add.collider(heart.group, platform.group);
-        this.physics.add.collider(player, platform.group);
 
-        player.onCollisionEnter();
-    }
-
-    update() {
-        player.moveCharacter();
-
+        this.addCameraFollow(background, player, this);
     }
 
 }
@@ -122,25 +120,25 @@ class SecondLevel extends SceneLevel {
     constructor() {
         super('secondLevel');
     }
-
-
     create() {
-        this.add.image(300, 750, 'greySky').setScrollFactor(1)
-        cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 400, 1400, cursor);
+        var background = this.add.image(300, 750, 'greySky').setScrollFactor(1)
         platform = new Platform(this);
+
+        player = new Player(this, 300, 1400, platform.group);
+
         enemy = new Enemy(this, 450, 1100);
         enemy = new Enemy(this, 200, 1030);
         enemy = new Enemy(this, 500, 860);
         enemy = new Enemy(this, 230, 700);
         enemy = new Enemy(this, 70, 240);
-        heart = new Heart(this);
-        door = new Door(this, 400, 100);
+        heart = new Heart(this, platform.group);
+
+        door = new Door(this, 400, 100, platform.group);
         this.physics.add.overlap(door, player, () => door.setLevelTransitionDestination('finalLevel'), null, door);
-        this.physics.add.collider(door, platform.group);
+
         heart.addItem(20, 630, 'heart');
-        this.physics.add.collider(heart.group, platform.group);
-        platform.addPlatform(400, 1500, 'platform').setScale(2).refreshBody();
+
+        platform.addPlatform(300, 1500, 'platform').setScale(1.5).refreshBody();
         platform.addPlatform(100, 1400, 'smallPlatform');
         platform.addPlatform(290, 1350, 'smallPlatform');
         platform.addPlatform(490, 1210, 'mediumPlatform');
@@ -160,36 +158,32 @@ class SecondLevel extends SceneLevel {
         platform.addPlatform(100, 290, 'bigPlatform');
         platform.addPlatform(400, 150, 'platform');
 
-
         player.onCollisionEnter();
-        this.physics.add.collider(player, platform.group);
-    }
 
-    update() {
-        player.moveCharacter();
+        this.addCameraFollow(background, player, this)
     }
 }
 
 class FinalLevel extends SceneLevel {
-
     constructor() {
         super('finalLevel');
     }
 
     create() {
-        this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
-        queen = new Queen(this, 510, 20);
-        cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 210, 20, cursor)
+        var background = this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
         platform = new Platform(this);
-        heart = new Heart(this);
+
+        player = new Player(this, 300, 1400, platform.group);
+        queen = new Queen(this, 510, 20,platform.group);
+
+        heart = new Heart(this,platform.group);
         heart.addItem(20, 400, 'heart');
-        this.physics.add.collider(heart.group, platform.group);
+
         enemy = new Enemy(this, 300, 1000);
         enemy = new Enemy(this, 180, 600);
         enemy = new Enemy(this, 410, 250);
-        player.onCollisionEnter()
-        platform.addPlatform(400, 1500, 'platform').setScale(2).refreshBody();
+
+        platform.addPlatform(300, 1500, 'platform').setScale(1.5).refreshBody();
         platform.addPlatform(100, 1400, 'smallPlatform');
         platform.addPlatform(250, 1250, 'smallPlatform');
         platform.addMovingPlatform(player, 350, 1250, 'littlePlatform');
@@ -204,7 +198,6 @@ class FinalLevel extends SceneLevel {
         platform.addPlatform(300, 500, 'littlePlatform');
         platform.addPlatform(150, 440, 'littlePlatform');
         platform.addPlatform(20, 440, 'littlePlatform');
-        platform.addPlatform(230, 750, 'littlePlatform');
         platform.addPlatform(400, 500, 'littlePlatform');
         platform.addPlatform(570, 400, 'mediumPlatform');
         platform.addPlatform(410, 310, 'bigPlatform');
@@ -212,14 +205,10 @@ class FinalLevel extends SceneLevel {
         platform.addPlatform(250, 100, 'mediumPlatform');
         platform.addPlatform(510, 100, 'bigPlatform');
 
-        this.physics.add.collider(player, platform.group);
         this.physics.add.overlap(player, queen, () => this.scene.start('CompleteGameScene'));
-        this.physics.add.collider(queen, platform.group);
-        this.cameras.main.setBackgroundColor('#000000');
-    }
+        this.addCameraFollow(background, player, this);
 
-    update() {
-        player.moveCharacter();
+        player.onCollisionEnter()
     }
 
 }
@@ -233,21 +222,51 @@ class GameCompleteScene extends SceneLevel {
     create() {
         this.add.text(300, 300, "Congratulation,you got the babe", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("25px");
         this.add.text(300, 360, "Thank you for playing !", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
-        let restartButton = this.add.text(300, 420, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
+        let restartButton = this.add.text(300, 420, "Would you like to Try again ? <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("25px").setInteractive();
         restartButton.on("pointerup", () => {
             this.scene.start("MainLevelScene");
         });
-        // achievementsCollection.setItem("completeGame",achievements.achievements.CompeteTheGame.Unlocked = "true");
-        // if(achievementsCollection.getItem('completeGame') === "true")
-        // {
-        //     console.log(true);
-        // }else
-        // {
-        //     console.log(false);
-        // }
     }
 
     update() {
+    }
+}
+
+class InstructionScene extends SceneLevel {
+    constructor() {
+        super('instructionScene');
+    }
+
+    create() {
+        this.add.text(300, 100, "How to play", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("35px");
+        var goBackButton = this.add.text(40, 50, "<=", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("50px").setInteractive();
+        goBackButton.on("pointerup", () => {
+            this.scene.start("startMenu");
+
+        });
+        this.add.text(0, 150, this.content(), {
+            fontFamily: 'Arial',
+            fill: '#FFFFFF',
+            align: 'center'
+        }).setFontSize('15px').setLineSpacing(10);
+
+    }
+
+    update() {
+
+    }
+
+    content() {
+        return ["To move the character:",
+            "Right: Right arrow.",
+            "Left: Left arrow.",
+            "Jump: Space bar. Note: The more you hold it the bigger the jump is going to be.",
+            "To jump at a certain position, you need to press the left or the right arrow.",
+            "The game includes:" +
+            "enemies that can take part of your health." +
+            "Health pick ups for healing.",
+            "The character is bouncy,so be careful with your jumps !",
+            "Reach the doors to progress to the next level."];
     }
 }
 
