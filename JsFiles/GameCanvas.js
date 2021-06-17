@@ -1,10 +1,10 @@
-var startMenu = new StartMenu();
-var firstLevel = new MainLevelScene();
-var secondLevel = new SecondLevel();
-var finalLevel = new FinalLevel();
-var completeGameScene = new GameCompleteScene();
-var instruction = new InstructionScene();
-var config = {
+const startMenu = new StartMenu();
+const firstLevel = new Levels();
+const secondLevel = new SecondLevel();
+const finalLevel = new FinalLevel();
+const completeGameScene = new GameCompleteScene();
+const instruction = new InstructionScene();
+const config = {
     type: Phaser.AUTO,
     width: 600,
     height: 1500,
@@ -23,7 +23,7 @@ var config = {
         pixelArt: true
     },
     scene: [startMenu, instruction, firstLevel, secondLevel, finalLevel, completeGameScene]
-}
+};
 
 class GameCanvas extends Phaser.Game {
     constructor(config) {

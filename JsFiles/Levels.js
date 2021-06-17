@@ -40,7 +40,7 @@ class SceneLevel extends Phaser.Scene {
     }
 
     addCameraFollow(background, player, scene) {
-        var cam = this.cameras.main.setBounds(0, 0, background.displayWidth, scene.displayHeight);
+        const cam = this.cameras.main.setBounds(0, 0, background.displayWidth, scene.displayHeight);
         return cam.startFollow(player);
     }
 
@@ -63,7 +63,7 @@ class StartMenu extends SceneLevel {
         let startButton = this.add.text(300, 500, "Start <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
         let infoButton = this.add.text(300, 550, "How to play <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
         startButton.on("pointerup", () => {
-            this.scene.start("MainLevelScene");
+            this.scene.start("Levels");
             document.documentElement.requestFullscreen().then(r => console.log('fullscreen'));
 
         });
@@ -77,13 +77,13 @@ class StartMenu extends SceneLevel {
     }
 }
 
-class MainLevelScene extends SceneLevel {
+class Levels extends SceneLevel {
     constructor() {
-        super('MainLevelScene');
+        super('Levels');
     }
 
     create() {
-        var background = this.add.image(300, 750, 'sky').setScrollFactor(1)
+        const background = this.add.image(300, 750, 'sky').setScrollFactor(1)
 
         platform = new Platform(this);
         platform.addPlatform(300, 1500, 'platform').setScale(1.5).refreshBody();
@@ -105,7 +105,7 @@ class MainLevelScene extends SceneLevel {
         platform.addPlatform(5, 260, 'mediumPlatform');
         platform.addPlatform(300, 150, 'platform').setScale(1).refreshBody();
 
-        player = new Player(this, 300, 1400, platform.group);
+        player = new Characters(this, 300, 1400, platform.group);
 
         door = new Door(this, 400, 100, platform.group);
 
@@ -121,10 +121,10 @@ class SecondLevel extends SceneLevel {
         super('secondLevel');
     }
     create() {
-        var background = this.add.image(300, 750, 'greySky').setScrollFactor(1)
+        const background = this.add.image(300, 750, 'greySky').setScrollFactor(1)
         platform = new Platform(this);
 
-        player = new Player(this, 300, 1400, platform.group);
+        player = new Characters(this, 300, 1400, platform.group);
 
         enemy = new Enemy(this, 450, 1100);
         enemy = new Enemy(this, 200, 1030);
@@ -170,10 +170,10 @@ class FinalLevel extends SceneLevel {
     }
 
     create() {
-        var background = this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
+        const background = this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
         platform = new Platform(this);
 
-        player = new Player(this, 300, 1400, platform.group);
+        player = new Characters(this, 300, 1400, platform.group);
         queen = new Queen(this, 510, 20,platform.group);
 
         heart = new Heart(this,platform.group);
@@ -222,9 +222,9 @@ class GameCompleteScene extends SceneLevel {
     create() {
         this.add.text(300, 300, "Congratulation,you got the babe", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("25px");
         this.add.text(300, 360, "Thank you for playing !", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
-        let restartButton = this.add.text(300, 420, "Would you like to Try again ? <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("25px").setInteractive();
+        const restartButton = this.add.text(300, 420, "Would you like to Try again ? <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("25px").setInteractive();
         restartButton.on("pointerup", () => {
-            this.scene.start("MainLevelScene");
+            this.scene.start("Levels");
         });
     }
 
@@ -239,7 +239,7 @@ class InstructionScene extends SceneLevel {
 
     create() {
         this.add.text(300, 100, "How to play", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("35px");
-        var goBackButton = this.add.text(40, 50, "<=", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("50px").setInteractive();
+        const goBackButton = this.add.text(40, 50, "<=", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("50px").setInteractive();
         goBackButton.on("pointerup", () => {
             this.scene.start("startMenu");
 
@@ -247,7 +247,7 @@ class InstructionScene extends SceneLevel {
         this.add.text(0, 150, this.content(), {
             fontFamily: 'Arial',
             fill: '#FFFFFF',
-            align: 'center'
+            align: 'justify'
         }).setFontSize('15px').setLineSpacing(10);
 
     }
@@ -260,11 +260,14 @@ class InstructionScene extends SceneLevel {
         return ["To move the character:",
             "Right: Right arrow.",
             "Left: Left arrow.",
-            "Jump: Space bar. Note: The more you hold it the bigger the jump is going to be.",
-            "To jump at a certain position, you need to press the left or the right arrow.",
+            "Jump: Space bar.",
+            "Note: The more you hold it the bigger the jump is going to be.",
+            "To jump at a certain position, you need to hold the left or the right arrow",
+            "before pressing the jump button.",
             "The game includes:" +
             "enemies that can take part of your health." +
             "Health pick ups for healing.",
+            "To kill an enemy you have bounce on his head",
             "The character is bouncy,so be careful with your jumps !",
             "Reach the doors to progress to the next level."];
     }

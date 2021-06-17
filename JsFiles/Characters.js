@@ -139,7 +139,6 @@ class Enemy extends Character {
                 player.setTint(0xff0000);
                 player.health--
                 player.healthStatus.setText("Health: " + player.health);
-                console.log('hello');
                 player.vulnerable = true;
                 if (player.health <= 0) {
                     player.addGameOverScene();
@@ -150,7 +149,7 @@ class Enemy extends Character {
 
 }
 
-class Player extends Character {
+class Characters extends Character {
     constructor(MainLevelScene, x, y, group) {
         super(MainLevelScene, x, y, group);
         this.setTexture('player');

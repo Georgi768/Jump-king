@@ -58,7 +58,7 @@ This section describes the overall outputs of the game.
 
 |              Case                         |       Type        |
 |-------------------------------------------|-------------------|
-|The item,which the character picks up      |       Item        |
+|The item,which the character picks up      |       Items        |
 |Game over screen/You win screen            |       String      |
 |The number of hearts left                  |       int         |
 |Achievements unlocked message              |       String      |
@@ -99,7 +99,7 @@ This section describes the test plan
 |----------------|-------------------|---------------|---------------|------------------------|
 |firstLevel      |   Achievement     |"RandomImage"  |   Rookie      |Complete the first level|
 
-#### Item
+#### Items
 
 |  objectName    |     object type   |  type  |
 |----------------|-------------------|--------|
