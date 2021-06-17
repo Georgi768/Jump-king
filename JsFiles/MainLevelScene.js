@@ -6,9 +6,6 @@ var heart;
 var door;
 var queen;
 
-//
-// var achievements = new AchievementManager();
-// var achievementsCollection = window.localStorage;
 class SceneLevel extends Phaser.Scene {
 
     constructor(key) {
@@ -20,13 +17,16 @@ class SceneLevel extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
+        this.load.image('sunshineSky', 'assets/SunShine.png');
+        this.load.image('queen', 'assets/queen.png');
+        this.load.image('greySky', 'assets/GreySky.png');
         this.load.spritesheet('player', 'assets/JumpKing.png', {frameWidth: 32, frameHeight: 48});
         this.load.image('platform', 'assets/platform.png');
         this.load.image('mediumPlatform', 'assets/MediumPlatform.png');
         this.load.image('smallPlatform', 'assets/smallPlatform.png');
         this.load.image('bigPlatform', 'assets/BigPlatform.png');
         this.load.image('littlePlatform', 'assets/littlePlatform.png');
-        this.load.image('star', 'assets/star.png');
+        this.load.image('heart', 'assets/heart.png');
         this.load.image('door', 'assets/Basic_Door_Pixel.png');
     }
 
@@ -44,7 +44,6 @@ class StartMenu extends SceneLevel {
 
     constructor() {
         super('startMenu');
-        this._achievementsCollection = window.localStorage;
     }
 
     create() {
@@ -52,6 +51,8 @@ class StartMenu extends SceneLevel {
         let startButton = this.add.text(300, 500, "Start", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
         startButton.on("pointerup", () => {
             this.scene.start("MainLevelScene");
+            document.documentElement.requestFullscreen().then(r => console.log('fullscreen'));
+
         });
     }
 
@@ -66,9 +67,10 @@ class MainLevelScene extends SceneLevel {
     }
 
     create() {
-        let background = this.add.image(400, 200, 'sky');
+
+        this.add.image(300, 750, 'sky').setScrollFactor(1)
         heart = new Heart(this);
-        heart.addItem(200,500,'star');
+        //heart.addItem(200, 500, 'star');
         cursor = this.input.keyboard.createCursorKeys();
         player = new Player(this, 100, 100, cursor);
         // heart = new Heart(this);
@@ -93,11 +95,9 @@ class MainLevelScene extends SceneLevel {
         platform.addPlatform(200, 260, 'smallPlatform');
         platform.addPlatform(5, 260, 'mediumPlatform');
         platform.addPlatform(300, 150, 'platform').setScale(1).refreshBody();
-        // heart.addItem(300, 120);
-        // platform.addPlatform(450, 1000, 'smallPlatform');
-        this.cameras.main.setBounds(0, 0, 500, this.displayHeight);
-        this.cameras.main.startFollow(player);
-        //platform.addMovingPlatform(player,100,1100,'bigPlatform');
+        var cam = this.cameras.main.setBounds(0, 0, this.displayWidth,this.displayHeight);
+
+        cam.startFollow(player);
 
         enemy = new Enemy(this, 100, 400);
         // enemy2 = new Enemy(this, 300, 100);
@@ -105,7 +105,7 @@ class MainLevelScene extends SceneLevel {
         door = new Door(this, 400, 100);
         this.physics.add.overlap(door, player, () => door.setLevelTransitionDestination('secondLevel'), null, door);
         this.physics.add.collider(door, platform.group);
-         this.physics.add.collider(heart.group, platform.group);
+        this.physics.add.collider(heart.group, platform.group);
         this.physics.add.collider(player, platform.group);
 
         player.onCollisionEnter();
@@ -125,6 +125,7 @@ class SecondLevel extends SceneLevel {
 
 
     create() {
+        this.add.image(300, 750, 'greySky').setScrollFactor(1)
         cursor = this.input.keyboard.createCursorKeys();
         player = new Player(this, 400, 1400, cursor);
         platform = new Platform(this);
@@ -137,7 +138,7 @@ class SecondLevel extends SceneLevel {
         door = new Door(this, 400, 100);
         this.physics.add.overlap(door, player, () => door.setLevelTransitionDestination('finalLevel'), null, door);
         this.physics.add.collider(door, platform.group);
-        heart.addItem(20, 630, 'star');
+        heart.addItem(20, 630, 'heart');
         this.physics.add.collider(heart.group, platform.group);
         platform.addPlatform(400, 1500, 'platform').setScale(2).refreshBody();
         platform.addPlatform(100, 1400, 'smallPlatform');
@@ -176,12 +177,13 @@ class FinalLevel extends SceneLevel {
     }
 
     create() {
+        this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
         queen = new Queen(this, 510, 20);
         cursor = this.input.keyboard.createCursorKeys();
-        player = new Player(this, 210, 1200, cursor)
+        player = new Player(this, 210, 20, cursor)
         platform = new Platform(this);
         heart = new Heart(this);
-        heart.addItem(20, 400, 'star');
+        heart.addItem(20, 400, 'heart');
         this.physics.add.collider(heart.group, platform.group);
         enemy = new Enemy(this, 300, 1000);
         enemy = new Enemy(this, 180, 600);
@@ -199,7 +201,7 @@ class FinalLevel extends SceneLevel {
         platform.addPlatform(230, 750, 'bigPlatform');
         platform.addPlatform(100, 650, 'mediumPlatform');
         platform.addPlatform(180, 550, 'littlePlatform');
-        platform.addPlatform(250, 500, 'littlePlatform');
+        platform.addPlatform(300, 500, 'littlePlatform');
         platform.addPlatform(150, 440, 'littlePlatform');
         platform.addPlatform(20, 440, 'littlePlatform');
         platform.addPlatform(230, 750, 'littlePlatform');
@@ -214,10 +216,6 @@ class FinalLevel extends SceneLevel {
         this.physics.add.overlap(player, queen, () => this.scene.start('CompleteGameScene'));
         this.physics.add.collider(queen, platform.group);
         this.cameras.main.setBackgroundColor('#000000');
-      //  console.log(achievements.achievements.EnemyKills.EnemiesKilled);
-      //  let items = achievementsCollection.getItem('kills');
-      //  console.log(items);
-        console.log(localStorage)
     }
 
     update() {
@@ -233,7 +231,6 @@ class GameCompleteScene extends SceneLevel {
     }
 
     create() {
-        achievementsCollection.setItem("completeGame",achievements.achievements.CompeteTheGame.Unlocked);
         this.add.text(300, 300, "Congratulation,you got the babe", {fill: '#FFFFFF'}).setOrigin(0.5).setFontSize("25px");
         this.add.text(300, 360, "Thank you for playing !", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
         let restartButton = this.add.text(300, 420, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();

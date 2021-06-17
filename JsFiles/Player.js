@@ -34,6 +34,44 @@ class Character extends Phaser.Physics.Arcade.Sprite {
         this._y = value;
     }
 
+    addAnimations() {
+        let animations = []
+        this.MainLevelScene.anims.create({
+            key: 'left',
+            frames: this.MainLevelScene.anims.generateFrameNumbers('player', {start: 1, end: 2}),
+            frameRate: 10,
+            repeat: -1
+        })
+        this.MainLevelScene.anims.create({
+            key: 'right',
+            frames: this.MainLevelScene.anims.generateFrameNumbers('player', {start: 4, end: 5}),
+            frameRate: 10,
+            repeat: -1
+        })
+        this.MainLevelScene.anims.create({
+            key: 'turn',
+            frames: [{key: 'player', frame: 3}],
+            frameRate: 20
+        });
+        this.MainLevelScene.anims.create({
+            key: 'jumpLeft',
+            frames: [{key: 'player', frame: 0}],
+            frameRate: 10
+        });
+        this.MainLevelScene.anims.create({
+            key: 'jumpRight',
+            frames: [{key: 'player', frame: 6}],
+            frameRate: 10
+        });
+        animations.push('left');
+        animations.push('right');
+        animations.push('turn');
+        animations.push('jumpLeft');
+        animations.push('jumpRight');
+        return animations;
+
+    }
+
     moveCharacter() {
         throw new TypeError("Cannot call abstract method.");
     }
@@ -48,6 +86,7 @@ class Enemy extends Character {
     constructor(MainLevelScene, x, y) {
         super(MainLevelScene, x, y);
         this.setTexture('player');
+        this.setTint(696969);
         MainLevelScene.add.existing(this);
         MainLevelScene.physics.add.existing(this);
         this.body.velocity.x = 80;
@@ -86,15 +125,18 @@ class Enemy extends Character {
     patrolMovement(enemy, platformGroup) {
         if (enemy.body.velocity.x > 0 && enemy.x > platformGroup.x + platformGroup.width / 2 ||
             enemy.body.velocity.x < 0 && enemy.body.x < platformGroup.x - platformGroup.width / 2) {
-
             enemy.body.velocity.x *= -1;
+            if (this.body.velocity.x > 0) {
+                enemy.anims.play(this.addAnimations()[1]);
+            } else {
+                enemy.anims.play(this.addAnimations()[0]);
+            }
         }
     }
 
     onCollisionEnter() {
 
     }
-
 
 }
 
@@ -127,24 +169,7 @@ class Player extends Character {
         return this._healthStatus;
     }
 
-    // checkKillsNumber() {
-    //     if (this._kills === 2) {
-    //         achievements.achievements.EnemyKills.Unlocked = true;
-    //         if(achievementsCollection.getItem("kills") === "false")
-    //         {
-    //             achievementsCollection.setItem('kills', achievements.achievements.EnemyKills.Unlocked = "True");
-    //             this.MainLevelScene.add.text(300, 400, "AchievementComplete", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
-    //         }else
-    //         {
-    //             console.log('already is killed');
-    //         }
-    //     }
-    //
-    // }
-
     addGameOverScene() {
-        //const color = new Phaser.Display.Color('#000000');
-        //this.MainLevelScene.setFillStyle(color.color);
         this.disableBody(true, true);
         this.MainLevelScene.add.text(300, 400, "You did not make it...", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
         let restartButton = this.MainLevelScene.add.text(300, 450, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
@@ -188,8 +213,7 @@ class Player extends Character {
         } else {
             heart.disableBody(true, true);
             this.health++;
-            if(this.health >= 3)
-            {
+            if (this.health >= 3) {
                 this.health = 3;
             }
             player.healthStatus.setText("Health: " + player.health);
@@ -200,18 +224,22 @@ class Player extends Character {
     moveCharacter() {
 
         if (cursor.left.isDown && this.power === 0 && this.body.touching.down) {
+            this.anims.play(this.addAnimations()[0], true);
             this.setMovementSpeedX(-100);
             this.facing = -1;
         }
         if (cursor.right.isDown && this.power === 0 && this.body.touching.down) {
+            this.anims.play(this.addAnimations()[1], true);
             this.setMovementSpeedX(100);
             this.facing = 1;
         }
         if (cursor.right.isUp && cursor.left.isUp && cursor.space.isUp && this.body.touching.down) {
+            this.anims.play(this.addAnimations()[2]);
             this.setMovementSpeedX(0);
             this.facing = 0;
         }
         if (cursor.space.isDown && this.body.touching.down && this.canJump) {
+            this.anims.play(this.addAnimations()[2]);
             this.setMovementSpeedX(0);
             this.power += .2;
         } else if (cursor.space.isUp && this.body.touching.down && this.power > 0) {
@@ -220,7 +248,6 @@ class Player extends Character {
             let tempY = this.power;
             this.body.setVelocity(tempX, -tempY * 25);
             this.canJump = true;
-            console.log(this.body.velocity.y);
         } else {
             this.power = 0;
             this.canJump = true;
@@ -237,8 +264,10 @@ class Player extends Character {
 
     setSpeedOnDirection() {
         if (this.facing === -1) {
+            this.anims.play(this.addAnimations()[3]);
             this.setMovementSpeedX(-225);
         } else if (this.facing === 1) {
+            this.anims.play(this.addAnimations()[4]);
             this.setMovementSpeedX(225);
         } else {
             this.setMovementSpeedX(0);
@@ -250,7 +279,7 @@ class Queen extends Character {
 
     constructor(MainLevelScene, x, y) {
         super(MainLevelScene, x, y);
-        this.setTexture('player');
+        this.setTexture('queen');
         MainLevelScene.add.existing(this);
         MainLevelScene.physics.add.existing(this);
     }
