@@ -169,6 +169,14 @@ This test section describes how `addPlatform()` works .
 
 This test tests if `setLevelTransitionDestination()` works .
 
-#   |   Door   |              Action                  |   Expected output   |
+|#   |   Door   |              Action                  |   Expected output   |
 |---:|---------|--------------------------------------|---------------------|
 | 1  | door    |`setLevelTransitionDestination(scene)`|new Level transition | 
+
+## Setting up the game
+To set up the game the user needs a local server.
+The user must place the files on the local server.
+
+## Reference
+
+Jump King. Nexile. (n.d.). https://nexile.se/jump-king/. 
