@@ -100,21 +100,17 @@ class Enemy extends Character {
         MainLevelScene.physics.add.existing(this);
         this.body.velocity.x = 80;
         MainLevelScene.physics.add.overlap(this, player, this.onCollisionEnter);
-        MainLevelScene.physics.add.collider(this, platform.group, this.patrolMovement, null, this);
+        MainLevelScene.physics.add.collider(this, platform.group, this.moveCharacter, null, this);
         MainLevelScene.time.addEvent({
             delay: 5000,
-            callback: this.activateVulnerability,
+            callback: player.activateVulnerability,
             callbacksScope: this,
             loop: true
         });
     }
 
-    activateVulnerability() {
-        player.vulnerable = false;
-        player.clearTint();
-    }
 
-    patrolMovement(enemy, platformGroup) {
+    moveCharacter(enemy, platformGroup) {
         if (enemy.body.velocity.x > 0 && enemy.x > platformGroup.x + platformGroup.width / 2 ||
             enemy.body.velocity.x < 0 && enemy.body.x < platformGroup.x - platformGroup.width / 2) {
             enemy.body.velocity.x *= -1;
@@ -149,7 +145,7 @@ class Enemy extends Character {
 
 }
 
-class Characters extends Character {
+class Player extends Character {
     constructor(MainLevelScene, x, y, group) {
         super(MainLevelScene, x, y, group);
         this.setTexture('player');
@@ -199,8 +195,12 @@ class Characters extends Character {
         this.MainLevelScene.add.text(300, 400, "You did not make it...", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
         let restartButton = this.MainLevelScene.add.text(300, 450, "Try again ?", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("30px").setInteractive();
         restartButton.on("pointerup", () => {
-            this.MainLevelScene.scene.start("MainLevelScene");
+            this.MainLevelScene.scene.start("firstLevel");
         });
+    }
+    activateVulnerability() {
+        player.vulnerable = false;
+        player.clearTint();
     }
 
     set healthStatus(value) {

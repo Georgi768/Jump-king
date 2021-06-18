@@ -7,7 +7,6 @@ var door;
 var queen;
 
 class SceneLevel extends Phaser.Scene {
-
     constructor(key) {
         super(key);
         if (new.target === Character) {
@@ -63,7 +62,7 @@ class StartMenu extends SceneLevel {
         let startButton = this.add.text(300, 500, "Start <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
         let infoButton = this.add.text(300, 550, "How to play <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("20px").setInteractive();
         startButton.on("pointerup", () => {
-            this.scene.start("Levels");
+            this.scene.start("firstLevel");
             document.documentElement.requestFullscreen().then(r => console.log('fullscreen'));
 
         });
@@ -77,9 +76,9 @@ class StartMenu extends SceneLevel {
     }
 }
 
-class Levels extends SceneLevel {
+class FirstLevel extends SceneLevel {
     constructor() {
-        super('Levels');
+        super('firstLevel');
     }
 
     create() {
@@ -105,7 +104,7 @@ class Levels extends SceneLevel {
         platform.addPlatform(5, 260, 'mediumPlatform');
         platform.addPlatform(300, 150, 'platform').setScale(1).refreshBody();
 
-        player = new Characters(this, 300, 1400, platform.group);
+        player = new Player(this, 300, 1400, platform.group);
 
         door = new Door(this, 400, 100, platform.group);
 
@@ -120,11 +119,12 @@ class SecondLevel extends SceneLevel {
     constructor() {
         super('secondLevel');
     }
+
     create() {
         const background = this.add.image(300, 750, 'greySky').setScrollFactor(1)
         platform = new Platform(this);
 
-        player = new Characters(this, 300, 1400, platform.group);
+        player = new Player(this, 300, 1400, platform.group);
 
         enemy = new Enemy(this, 450, 1100);
         enemy = new Enemy(this, 200, 1030);
@@ -173,10 +173,10 @@ class FinalLevel extends SceneLevel {
         const background = this.add.image(300, 750, 'sunshineSky').setScrollFactor(1)
         platform = new Platform(this);
 
-        player = new Characters(this, 300, 1400, platform.group);
-        queen = new Queen(this, 510, 20,platform.group);
+        player = new Player(this, 300, 1400, platform.group);
+        queen = new Queen(this, 510, 20, platform.group);
 
-        heart = new Heart(this,platform.group);
+        heart = new Heart(this, platform.group);
         heart.addItem(20, 400, 'heart');
 
         enemy = new Enemy(this, 300, 1000);
@@ -224,7 +224,7 @@ class GameCompleteScene extends SceneLevel {
         this.add.text(300, 360, "Thank you for playing !", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("40px");
         const restartButton = this.add.text(300, 420, "Would you like to Try again ? <", {fill: '#FFFFFF'}).setScrollFactor(0).setOrigin(0.5).setFontSize("25px").setInteractive();
         restartButton.on("pointerup", () => {
-            this.scene.start("Levels");
+            this.scene.start("firstLevel");
         });
     }
 

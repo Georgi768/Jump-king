@@ -17,120 +17,124 @@ For the project, framework such as Phaser Js will be used. This framework is fas
 
 ## Input
 This section describes the inputs that will be included in the game.
-#### MainCharacter
-|     Case       |       Type        |    Condition  |
-|----------------|-------------------|---------------|
-|SceneLocation   |       Scene       | not empty     |
-|PlayerX         |       int         | not empty     |
-|PlayerY         |       int         | not empty     |
+#### Player
+|     Case       |            Type        |    Condition  |
+|----------------|------------------------|---------------|
+|mainLevelScene  |       Scene            | not empty     |
+|X               |       int              | not empty     |
+|Y               |       int              | not empty     |
+|group           |Phaser.GameObjects.Group| not empty     |
+
+#### Enemy
+|     Case       |            Type        |    Condition  |
+|----------------|------------------------|---------------|
+|mainLevelScene  |       Scene            | not empty     |
+|X               |       int              | not empty     |
+|Y               |       int              | not empty     |
+
+#### Queen
+|     Case       |            Type        |    Condition  |
+|----------------|------------------------|---------------|
+|mainLevelScene  |       Scene            | not empty     |
+|X               |       int              | not empty     |
+|Y               |       int              | not empty     |
+|group           |Phaser.GameObjects.Group| not empty     |
 
 #### Heart
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
-|SceneLocation   |       Scene       | not empty     |
-|TypeOfItem      |       Enum        | not Empty     |
-|ItemX           |       int         | not Empty     |
-|ItemY           |       int         | not Empty     |
+|scene           |       Scene       | not empty     |
+|group           |       int         | not Empty     |
+
+#### Door
+|     Case       |            Type        |Condition |
+|----------------|------------------------|----------|
+|scene           |       Scene            | not empty|
+|X               |       int              | not empty|
+|Y               |       int              | not empty|
+|group           |Phaser.GameObjects.Group| not empty|
 
 #### GameCanvas
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
-|CanvasWidth     |   double          |    >= 0       |
-|CanvasHeight    |   double          |    >= 0       |
-
-#### Achievements
-|     Case       |       Type        |    Condition  |
-|----------------|-------------------|---------------|
-|Icon/Image      |   String          |    not empty  |
-|Title           |   String          |    not empty  |
-|Description     |   String          |    not empty  |
-|isUnlocked      |   boolean         |initially false|
+|config          |   array           |not empty      |
 
 #### Platform
 |     Case       |       Type        |    Condition  |
 |----------------|-------------------|---------------|
-|SceneLocation   |   Scene           | not empty     |
-|Width           |   int             |    >= 0       |
-|Height          |   int             |    >= 0       |
+|Scene           |   Scene           | not empty     |
 
 ## Output
 This section describes the overall outputs of the game.
 
 |              Case                         |       Type        |
 |-------------------------------------------|-------------------|
-|The item,which the character picks up      |       Items        |
-|Game over screen/You win screen            |       String      |
+|The item,which the character picks up      |       Items       |
+|adding animations method                   |       Array       |
 |The number of hearts left                  |       int         |
-|Achievements unlocked message              |       String      |
 
 ## Class diagram
 This section illustrates the uml class diagram
 
-![umlDiagram](../images/NewClassDiagram.png)
+![umlDiagram](../images/JumpKing.png)
 
 ## Test plan
 This section describes the test plan
 
 #### GameCanvas
 
-|  objectName    |     object type   |    width      |    height     |
-|----------------|-------------------|---------------|---------------|
-|gameCanvas      |   GameCanvas      |     800       |     600       |
+|  objectName    |     object type   |
+|----------------|-------------------|
+|gameCanvas      |   GameCanvas      |
 
-#### LevelScene
+#### SceneLevel
 |     Case       |   object type     |
 |----------------|-------------------|
-|levelScene      |      LevelScene   |
+|sceneLevel      |      SceneLevel   |
 
-#### Character
-|  objectName    |     object type   |    Scene      |         x     |     y    |
-|----------------|-------------------|---------------|---------------|----------|
-|jumpKing        |   MainCharacter   |  firstLevel   |     400       | 400      |
+#### Player
+|  objectName    |     object type   |    Scene      |         x     |     y    |   group  |
+|----------------|-------------------|---------------|---------------|----------|----------|
+|player          |   Player          |  scene        |      300      | 1400     |platform  |
 
 #### Enemy
 
-|  objectName    |     object type   |    Scene      |         x     |     y    |
-|----------------|-------------------|---------------|---------------|----------|
-|   lizard       |      Enemy        |  firstLevel   |     700       | 400      |
-
-#### Achievements 
-
-|  objectName    |     object type   |    image      |    title      |     Description        |
-|----------------|-------------------|---------------|---------------|------------------------|
-|firstLevel      |   Achievement     |"RandomImage"  |   Rookie      |Complete the first level|
+|  objectName    |     object type   |    Scene      |         x     |     y    |   group  |
+|----------------|-------------------|---------------|---------------|----------|----------|
+|   enemy        |      Enemy        |  scene        |     700       | 400      |platform  |
 
 #### Items
 
-|  objectName    |     object type   |  type  |
-|----------------|-------------------|--------|
-|    heart       |      Heart        | Healing|
+|  objectName    |     object type   |  scene  |         x     |     y    |   group  |
+|----------------|-------------------|---------|---------------|----------|----------|
+|    heart       |      Heart        | scene   |     700       | 400      |platform  |
 
 #### Platform
 
-|  objectName    |     object type   |  Scene    | width | height|
-|----------------|-------------------|-----------|-------|-------|
-|    platform    |      Platform     |FirstLevel |200    |  50   |
+|  objectName    |     object type   |  Scene    |
+|----------------|-------------------|-----------|
+|    platform    |      Platform     |FirstLevel |
 
 
 ## Test cases
 
 ### pickUpItem
 
-This section will describe `pickUpItem()` if it's working correctly
+This section will describe `onCollisionEnter()` if it's working correctly
 
-#### pickUpItemIfHealthBarNumberIsLessThanThree
-
-
-|#   |MainCharacter   |       Action              |         Expected output           |
-|---:|---------------|---------------------------|-----------------------------------|
-| 1  | Jump king      |`pickUpItem(heart:Heart)` |heart(HealthBar increments by one)|
-
-#### pickUpItemIfHealthBarNumberIsThree
+#### onCollisionEnterIfHealthBarNumberIsLessThanThree
 
 
-|#   |MainCharacter   |       Action              |             Expected output        |
-|---:|----------------|---------------------------|------------------------------------|
-| 1  | Jump king      |`pickUpItem(heart:Heart)`  |heart(HealthBar stays the same number|
+|#   |Player         |       Action             |         Expected output          |
+|---:|---------------|---------------------------|---------------------------------|
+| 1  | player        |`onCollisionEnter()`      |heart(HealthBar increments by one)|
+
+#### onCollisionEnterIfHealthBarNumberIsThree
+
+
+|#   |Player          |       Action              |              Expected output        |
+|---:|----------------|---------------------------|-------------------------------------|
+| 1  | player king    |`onCollisionEnter()`       |heart(HealthBar stays the same number|
 
 ### onCollisionEnter
 
@@ -138,34 +142,33 @@ This case provides information about `onCollisionEnter()` .
 
 #### onCollisionEnterWithEnemy
 
-|#   |MainCharacter   |       Action              |             Expected output        |
+|#   |Enemy           |       Action              |             Expected output        |
 |---:|----------------|---------------------------|------------------------------------|
-| 1  | Jump king      |   `onCollisionEnter()`    |PlayerHealth decrements by one(3-1=2)|
-
-### getTitleAndDescriptionIfUnlocked()
-
-This section checks if `getTitleAndDescriptionIfUnlocked()` works properly.
-
-#### getTitleAndDescriptionIfUnlocked
-
-|#   |  Achievement   |                Action              |     Expected output             |
-|---:|----------------|------------------------------------|---------------------------------|
-| 1  | firstLevel     |`getTitleAndDescriptionIfUnlocked()`|Rookie: Complete the first level |
-
-### getWinOrLoseWindow()
-
-This test section describes how `getWinOrLoseWindow()` works .
-
-#### getWinOrLoseWindowIfTheCharacterLosses
+| 1  | enemy          |   `onCollisionEnter()`    |PlayerHealth decrements by one(3-1=2)|
 
 
-|#   |   LevelScene   |                    Action                  |             Expected output             |
+### addPlatform()
+
+This test section describes how `addPlatform()` works .
+
+#### addPlatform
+
+
+|#   |   Platform     |                    Action                  |             Expected output             |
 |---:|----------------|--------------------------------------------|-----------------------------------------|
-| 1  | levelScene     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|        You failed! Try again ?          |
+| 1  | platform       |`addPlatform(200,400,'smallPlatform')`      |       Phaser.GameObjects                |
 
-#### getWinOrLoseWindowIfTheCharacterWins
+### addMovingPlatforms
 
 
-|#   |   LevelScene   |                    Action                  |                Expected output               |
-|---:|----------------|--------------------------------------------|----------------------------------------------|
-| 1  | levelScene     |`getWinOrLoseWindow(jumpKing:MainCharacter)`|Congrats!You beat the game and saved the queen|
+|#   |   Platform   |                             Action                  | Expected output   |
+|---:|--------------|-----------------------------------------------------|-------------------|
+| 1  | platform     |`addMovingPlatforms(player,300,1300,'smallPlatform')`|      Phaser.Image |   
+
+### setLevelTransitionDestination
+
+This test tests if `setLevelTransitionDestination()` works .
+
+#   |   Door   |              Action                  |   Expected output   |
+|---:|---------|--------------------------------------|---------------------|
+| 1  | door    |`setLevelTransitionDestination(scene)`|new Level transition | 

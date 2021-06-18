@@ -3,38 +3,7 @@ class Platform extends Phaser.Physics.Arcade.Image {
         super(scene);
         scene.add.existing(this);
         this._group = scene.physics.add.staticGroup();
-    }
-
-    get group() {
-        return this._group;
-    }
-
-    set group(value) {
-        this._group = value;
-    }
-
-    get x() {
-        return this._x;
-    }
-
-    set x(value) {
-        this._x = value;
-    }
-
-    get y() {
-        return this._y;
-    }
-
-    set y(value) {
-        this._y = value;
-    }
-
-    get texture() {
-        return this._texture;
-    }
-
-    set texture(value) {
-        this._texture = value;
+        this._scene = scene;
     }
 
     get scene() {
@@ -43,6 +12,14 @@ class Platform extends Phaser.Physics.Arcade.Image {
 
     set scene(value) {
         this._scene = value;
+    }
+
+    get group() {
+        return this._group;
+    }
+
+    set group(value) {
+        this._group = value;
     }
 
     addPlatform(x, y, texture) {

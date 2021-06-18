@@ -1,5 +1,5 @@
 const startMenu = new StartMenu();
-const firstLevel = new Levels();
+const firstLevel = new FirstLevel();
 const secondLevel = new SecondLevel();
 const finalLevel = new FinalLevel();
 const completeGameScene = new GameCompleteScene();
